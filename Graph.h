@@ -40,7 +40,7 @@ public:
 
 	//  Константные итераторы на списки смежных рёбер
 	inline auto begin() const { return std::begin(adj); }
-	inline auto end() const { return std::begin(adj); }
+	inline auto end() const { return std::end(adj); }
 };
 
 //  Представление графа
@@ -104,7 +104,7 @@ public:
 
 		for (sizetype i = 0; i < grSize; ++i) {
 			std::cout << " " << i << " : ";
-			for (auto edg : vertices[i].adj) {
+			for (const auto edg : vertices[i].adj) {
 				std::cout << edg.dest << "(" << edg.weight << ")  ";
 			}
 			std::cout << '\n';
