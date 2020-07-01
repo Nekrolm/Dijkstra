@@ -29,7 +29,7 @@ public:
 	//  Имя - это просто номер/индекс
 	size_type name;
 	//  Список смежных вершин
-	std::list<edge> adj;
+	std::vector<edge> adj;
 
 	vertex(size_type Name) : name(Name) {}
 
@@ -39,8 +39,8 @@ public:
 	}
 
 	//  Константные итераторы на списки смежных рёбер
-	std::list<edge>::const_iterator cbegin() const { return adj.cbegin(); }
-	std::list<edge>::const_iterator cend() const { return adj.cend(); }
+	inline auto begin() const { return std::begin(adj); }
+	inline auto end() const { return std::begin(adj); }
 };
 
 //  Представление графа
@@ -153,8 +153,8 @@ inline std::ostream& operator<<(std::ostream& out, const Graph& gr) {
 	out << "Graph  (" << gr.size() << ") nodes \n";
 	for (auto nodeIt = gr.cbegin(); nodeIt != gr.cend(); ++nodeIt) {
 		out << "  Node " << nodeIt->name << '\n';
-		for (auto adjIt = nodeIt->cbegin(); adjIt != nodeIt->cend(); ++adjIt) {
-			out << nodeIt->name << " -> " << adjIt->dest << "(" << adjIt->weight << ")\n";
+		for (const auto [dest, weight] : *nodeIt) {
+			out << nodeIt->name << " -> " << dest << "(" << weight << ")\n";
 		}
 	}
 	return out;
