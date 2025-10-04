@@ -255,20 +255,20 @@ public:
 			nodes[current.vertex->name].state = vertexState::Finished;
 
 			//  Для всех связанных с текущей
-			for (auto adjIt = current.vertex->cbegin(); adjIt != current.vertex->cend(); ++adjIt)
-				if (nodes[adjIt->dest].state == vertexState::None) {
+			for (const auto [dest, weight ] : *(current.vertex))
+				if (nodes[dest].state == vertexState::None) {
 					//  Эту вершину ещё не открывали, её в любом случае в очередь добавляем
-					nodes[adjIt->dest].state = vertexState::Opened;
-					nodes[adjIt->dest].parent = current.vertex->name;
-					nodes[adjIt->dest].weight = nodes[current.vertex->name].weight + adjIt->weight;
-					epq.push(nodes[adjIt->dest]);
+					nodes[dest].state = vertexState::Opened;
+					nodes[dest].parent = current.vertex->name;
+					nodes[dest].weight = nodes[current.vertex->name].weight + weight;
+					epq.push(nodes[dest]);
 				}
 				else {
 					//  Уже открывали, пересчитываем - может быть, оценка уменьшится
-					if (nodes[adjIt->dest].state != vertexState::Finished && nodes[adjIt->dest].weight > nodes[current.vertex->name].weight + adjIt->weight) {
-						nodes[adjIt->dest].weight = nodes[current.vertex->name].weight + adjIt->weight;
-						nodes[adjIt->dest].parent = current.vertex->name;
-						epq.decreaseKey(nodes[adjIt->dest].index);
+					if (nodes[dest].state != vertexState::Finished && nodes[dest].weight > nodes[current.vertex->name].weight + weight) {
+						nodes[dest].weight = nodes[current.vertex->name].weight + weight;
+						nodes[dest].parent = current.vertex->name;
+						epq.decreaseKey(nodes[dest].index);
 					}
 				}
 		}
